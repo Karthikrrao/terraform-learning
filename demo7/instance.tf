@@ -1,11 +1,17 @@
-resource "aws_vpc" "karthik_main" {
-  cidr_block       = "10.0.0.0/16"
-  instance_tenancy = "default"
+resource "aws_instance" "example" {
+  ami       = var.AMIS[var.AWS_REGION]
+  instance_type = "t2.micro"
 
 }
 
-resource "aws_subnet" "subnet1" {
-  vpc_id     = aws_vpc.karthik_main.id
-  cidr_block = "10.0.1.0/24"
- }
- 
+subnet_id = aws_subnet.main-public-1.id
+vpc_security_group_ids = [aws_secuity_group.allow_ssh.id]
+key_name = aws_key_pair.mykeypair.key_name
+
+resource "aws_ebs_volume" "ebs-volume-1" {
+  availability_zone = "eu-west-1a"
+  size = 20
+  type = "gp2"
+  tags {
+   }
+}
